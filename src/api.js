@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // Configuration
 const FUNIFIER_SERVICE_URL = 'https://service2.funifier.com/v3';
+const API_KEY = '67e56a982327f74f3a2eb619';
 const BASIC_AUTH = 'Basic NjdlNTZhOTgyMzI3Zjc0ZjNhMmViNjE5OjY3ZWM0ZTRhMjMyN2Y3NGYzYTJmOTZmNQ==';
 
 // API service class
@@ -32,27 +33,40 @@ class FunifierAPI {
         return !!(this.accessToken && this.playerId);
     }
 
-    // Login function (corrigido)
-    async login(email, password) {
+    // Login function (usando password grant)
+    async login(username, password) {
         try {
-            const response = await axios.post(`${FUNIFIER_SERVICE_URL}/auth/basic`, {
-                email,
-                password
-            });
+            const params = new URLSearchParams();
+            params.append('apiKey', API_KEY);
+            params.append('username', username);
+            params.append('password', password);
+            params.append('grant_type', 'password');
 
-            const { playerId, accessToken } = response.data;
-            this.setAuth(accessToken, playerId);
+            const response = await axios.post(
+                `${FUNIFIER_SERVICE_URL}/auth/token`,
+                params,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }
+            );
+
+            const { access_token, token_type } = response.data;
+            // O username pode ser o playerId ou email, mas vamos salvar como playerId
+            this.setAuth(access_token, username);
 
             return {
                 success: true,
-                playerId,
-                accessToken
+                playerId: username,
+                accessToken: access_token,
+                tokenType: token_type
             };
         } catch (error) {
             console.error('Login error:', error.response?.data || error.message);
             return {
                 success: false,
-                error: error.response?.data?.message || 'Erro no login. Verifique suas credenciais.'
+                error: error.response?.data?.error_description || error.response?.data?.message || 'Erro no login. Verifique suas credenciais.'
             };
         }
     }
