@@ -112,6 +112,16 @@
     font-weight: bold;
 }
 
+.humor-indicator {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.humor-indicator:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
 .main-content {
     display: grid;
     grid-template-columns: 2fr 1fr;

@@ -2,6 +2,9 @@ import React from 'react';
 import './MedalhasPanel.css';
 
 const MedalhasPanel = ({ playerData, medalhas }) => {
+    console.log('MedalhasPanel - playerData:', playerData);
+    console.log('MedalhasPanel - catalog_items:', playerData?.catalog_items);
+    
     const medalTypes = [
         { id: 'progresso', name: 'Progresso', icon: '📈' },
         { id: 'estrela', name: 'Estrela', icon: '⭐' },
@@ -16,16 +19,19 @@ const MedalhasPanel = ({ playerData, medalhas }) => {
     ];
 
     // Get player's inventory
-    const playerInventory = playerData?.virtualgoods || {};
+    const playerInventory = playerData?.catalog_items || {};
 
     // Get medal state for a specific type
     const getMedalState = (type) => {
         for (const level of medalLevels) {
             const medalId = `medalha_${type}_${level.id}`;
+            console.log(`Checking medal ${medalId}:`, playerInventory[medalId]);
             if (playerInventory[medalId] > 0) {
+                console.log(`Found medal ${medalId} with quantity:`, playerInventory[medalId]);
                 return level;
             }
         }
+        console.log(`No medal found for type ${type}`);
         return null; // No medal
     };
 

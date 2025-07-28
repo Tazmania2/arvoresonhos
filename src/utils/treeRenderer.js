@@ -351,7 +351,7 @@ class TreeRenderer {
                     .attr("font-size", "12px")
                     .attr("fill", "#4a5568")
                     .attr("transform", `translate(10, ${yOffset})`)
-                    .text(`Nível Médio: ${playerStats.avg_level}`);
+                    .text(`Nível Médio: ${playerStats.avg_level.toFixed(1)}`);
                 yOffset += 15;
             }
 
@@ -360,7 +360,7 @@ class TreeRenderer {
                     .attr("font-size", "12px")
                     .attr("fill", "#4a5568")
                     .attr("transform", `translate(10, ${yOffset})`)
-                    .text(`Humor Médio: ${playerStats.avg_mood}`);
+                    .text(`Humor Médio: ${playerStats.avg_mood.toFixed(1)}`);
             }
         }
 

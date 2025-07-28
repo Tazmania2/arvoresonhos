@@ -127,11 +127,26 @@ const PlayerDashboard = ({ onLogout }) => {
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Nível Médio</span>
-                            <span className="stat-value">{playerData?.extra?.avg_level || 'N/A'}</span>
+                            <span className="stat-value">{playerData?.extra?.avg_level ? playerData.extra.avg_level.toFixed(1) : 'N/A'}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Humor Médio</span>
-                            <span className="stat-value">{playerData?.extra?.avg_mood || 'N/A'}</span>
+                            <span 
+                                className="stat-value humor-indicator"
+                                style={{
+                                    backgroundColor: playerData?.extra?.avg_mood === 1 ? '#e53e3e' :
+                                                  playerData?.extra?.avg_mood === 2 ? '#d69e2e' :
+                                                  playerData?.extra?.avg_mood === 3 ? '#3182ce' :
+                                                  playerData?.extra?.avg_mood === 4 ? '#38a169' : '#718096',
+                                    color: 'white',
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {playerData?.extra?.avg_mood ? playerData.extra.avg_mood.toFixed(1) : 'N/A'}
+                            </span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Multiplicador</span>
