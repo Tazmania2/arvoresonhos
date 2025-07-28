@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 // Configuration
-const FUNIFIER_API_URL = 'https://api.funifier.com';
 const FUNIFIER_SERVICE_URL = 'https://service2.funifier.com/v3';
 const BASIC_AUTH = 'Basic NjdlNTZhOTgyMzI3Zjc0ZjNhMmViNjE5OjY3ZWM0ZTRhMjMyN2Y3NGYzYTJmOTZmNQ==';
 
@@ -33,10 +32,10 @@ class FunifierAPI {
         return !!(this.accessToken && this.playerId);
     }
 
-    // Login function
+    // Login function (corrigido)
     async login(email, password) {
         try {
-            const response = await axios.post(`${FUNIFIER_API_URL}/player/login`, {
+            const response = await axios.post(`${FUNIFIER_SERVICE_URL}/auth/basic`, {
                 email,
                 password
             });
@@ -65,7 +64,7 @@ class FunifierAPI {
         }
 
         try {
-            const response = await axios.get(`${FUNIFIER_API_URL}/status/player/me`, {
+            const response = await axios.get(`${FUNIFIER_SERVICE_URL}/status/player/me`, {
                 headers: {
                     'Authorization': `Bearer ${this.accessToken}`,
                     'Content-Type': 'application/json'
