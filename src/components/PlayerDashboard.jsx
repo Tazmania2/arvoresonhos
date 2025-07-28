@@ -63,8 +63,12 @@ const PlayerDashboard = ({ onLogout }) => {
             const playerStats = {
                 avg_level: playerData?.extra?.avg_level,
                 avg_mood: playerData?.extra?.avg_mood,
-                points: playerData?.points?.pontos
+                points: playerData?.total_points
             };
+            
+            console.log('Player Data:', playerData);
+            console.log('Player Stats for Tree:', playerStats);
+            
             treeRendererRef.current.render(clientes, playerStats);
         }
     }, [clientes, playerData]);
@@ -119,7 +123,7 @@ const PlayerDashboard = ({ onLogout }) => {
                     <div className="stats-grid">
                         <div className="stat-item">
                             <span className="stat-label">Pontos Totais</span>
-                            <span className="stat-value">{playerData?.points?.pontos || '0'} 🎯</span>
+                            <span className="stat-value">{playerData?.total_points || '0'} 🎯</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Nível Médio</span>
@@ -172,7 +176,7 @@ const PlayerDashboard = ({ onLogout }) => {
                         <div className="points-panel">
                             <h3>🎯 Pontos e Status</h3>
                             <div className="points-info">
-                                <p><strong>Pontos Totais:</strong> {playerData?.points?.pontos || '0'}</p>
+                                <p><strong>Pontos Totais:</strong> {playerData?.total_points || '0'}</p>
                                 <p><strong>Última Atualização:</strong> {playerData?.extra?.medal_expire_at ? new Date(playerData.extra.medal_expire_at).toLocaleDateString('pt-BR') : 'N/A'}</p>
                                 <p><strong>Status:</strong> {playerData?.extra?.at_risk ? '⚠️ Em Risco' : '✅ Seguro'}</p>
                                 <p><strong>Clientes Bloqueados:</strong> {playerData?.extra?.blocked_clients?.length || '0'}</p>

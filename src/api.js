@@ -78,13 +78,14 @@ class FunifierAPI {
         }
 
         try {
-            const response = await axios.get(`${FUNIFIER_SERVICE_URL}/status/player/me`, {
+            const response = await axios.get(`${FUNIFIER_SERVICE_URL}/player/me/status`, {
                 headers: {
                     'Authorization': `Bearer ${this.accessToken}`,
                     'Content-Type': 'application/json'
                 }
             });
 
+            console.log('Player Status Response:', response.data);
             return {
                 success: true,
                 data: response.data
