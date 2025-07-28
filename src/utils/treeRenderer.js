@@ -79,6 +79,15 @@ class TreeRenderer {
         return Math.max(3, nivel * 0.8);
     }
 
+    // Count total nodes in tree data
+    countNodes(data) {
+        let count = 1; // Count current node
+        if (data.children) {
+            count += data.children.reduce((sum, child) => sum + this.countNodes(child), 0);
+        }
+        return count;
+    }
+
     // Create detailed tooltip content
     createTooltipContent(cliente, points, status) {
         const humorText = {
@@ -117,6 +126,11 @@ class TreeRenderer {
         
         const width = this.width - this.margin.left - this.margin.right;
         const height = this.height - this.margin.top - this.margin.bottom;
+        
+        // Calculate dynamic tree size based on number of nodes
+        const totalNodes = this.countNodes(treeData);
+        const dynamicHeight = Math.max(height, totalNodes * 40);
+        const dynamicWidth = Math.max(width, totalNodes * 30);
 
         // Create SVG with zoom support
         this.svg = container.append("svg")
@@ -141,8 +155,13 @@ class TreeRenderer {
 
         this.svg.call(this.zoom);
 
-        // Create tree layout (VERTICAL)
-        const tree = d3.tree().size([width, height]);
+        // Create tree layout (VERTICAL) with better spacing
+        const tree = d3.tree()
+            .size([dynamicWidth, dynamicHeight])
+            .separation((a, b) => {
+                // Increase separation between nodes
+                return (a.parent === b.parent ? 1.2 : 1.5);
+            });
         const root = d3.hierarchy(treeData);
         tree(root);
 
@@ -219,17 +238,43 @@ class TreeRenderer {
             .attr("font-size", "14px")
             .text("🍎");
 
-        // Add labels
-        nodes.append("text")
-            .attr("dy", d => d.children ? -20 : 20)
-            .attr("x", d => d.children ? -10 : 10)
-            .attr("text-anchor", d => d.children ? "end" : "start")
-            .attr("font-size", "11px")
+        // Add labels with better positioning and background
+        const labels = nodes.append("text")
+            .attr("dy", d => {
+                if (d.children) {
+                    return -25; // Parent nodes above
+                }
+                // Alternate position for leaf nodes to avoid overlap
+                const index = d.parent ? d.parent.children.indexOf(d) : 0;
+                return index % 2 === 0 ? 25 : -25;
+            })
+            .attr("x", d => {
+                if (d.children) {
+                    return -15; // Parent nodes to the left
+                }
+                // Alternate side for leaf nodes
+                const index = d.parent ? d.parent.children.indexOf(d) : 0;
+                return index % 2 === 0 ? 15 : -15;
+            })
+            .attr("text-anchor", d => {
+                if (d.children) {
+                    return "end";
+                }
+                // Alternate anchor for leaf nodes
+                const index = d.parent ? d.parent.children.indexOf(d) : 0;
+                return index % 2 === 0 ? "start" : "end";
+            })
+            .attr("font-size", "10px")
             .attr("fill", "#4a5568")
             .style("pointer-events", "none")
+            .style("font-weight", "500")
+            .style("text-shadow", "0 1px 2px rgba(255,255,255,0.8)")
             .text(d => {
                 if (d.data.cliente) {
-                    return `${d.data.cliente.cliente_id} (N${d.data.cliente.nivel})`;
+                    // Shorten the label to avoid overlap
+                    const clienteId = d.data.cliente.cliente_id;
+                    const shortId = clienteId.length > 8 ? clienteId.substring(0, 8) + '...' : clienteId;
+                    return `${shortId} (N${d.data.cliente.nivel})`;
                 }
                 return d.data.name;
             });
