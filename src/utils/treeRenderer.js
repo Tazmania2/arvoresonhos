@@ -315,15 +315,15 @@ class TreeRenderer {
             });
 
         // Add player stats if available
-        if (playerStats.avg_level || playerStats.avg_mood) {
+        if (playerStats.avg_level || playerStats.avg_mood || playerStats.points) {
             const statsGroup = this.g.append("g")
                 .attr("class", "player-stats")
                 .attr("transform", `translate(10, 10)`);
 
             // Background for stats
             statsGroup.append("rect")
-                .attr("width", 200)
-                .attr("height", 80)
+                .attr("width", 220)
+                .attr("height", 100)
                 .attr("fill", "rgba(255,255,255,0.9)")
                 .attr("stroke", "#e2e8f0")
                 .attr("stroke-width", 1)
@@ -336,19 +336,30 @@ class TreeRenderer {
                 .attr("transform", "translate(10, 20)")
                 .text("📊 Estatísticas do Jogador");
 
+            let yOffset = 40;
+            if (playerStats.points) {
+                statsGroup.append("text")
+                    .attr("font-size", "12px")
+                    .attr("fill", "#4a5568")
+                    .attr("transform", `translate(10, ${yOffset})`)
+                    .text(`Pontos: ${playerStats.points} 🎯`);
+                yOffset += 15;
+            }
+
             if (playerStats.avg_level) {
                 statsGroup.append("text")
                     .attr("font-size", "12px")
                     .attr("fill", "#4a5568")
-                    .attr("transform", "translate(10, 40)")
+                    .attr("transform", `translate(10, ${yOffset})`)
                     .text(`Nível Médio: ${playerStats.avg_level}`);
+                yOffset += 15;
             }
 
             if (playerStats.avg_mood) {
                 statsGroup.append("text")
                     .attr("font-size", "12px")
                     .attr("fill", "#4a5568")
-                    .attr("transform", "translate(10, 55)")
+                    .attr("transform", `translate(10, ${yOffset})`)
                     .text(`Humor Médio: ${playerStats.avg_mood}`);
             }
         }

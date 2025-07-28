@@ -62,7 +62,8 @@ const PlayerDashboard = ({ onLogout }) => {
             // Render tree
             const playerStats = {
                 avg_level: playerData?.extra?.avg_level,
-                avg_mood: playerData?.extra?.avg_mood
+                avg_mood: playerData?.extra?.avg_mood,
+                points: playerData?.points?.pontos
             };
             treeRendererRef.current.render(clientes, playerStats);
         }
@@ -104,7 +105,7 @@ const PlayerDashboard = ({ onLogout }) => {
                 <div className="header-content">
                     <h1>🌳 Árvore dos Sonhos</h1>
                     <div className="player-info">
-                        <span>Bem-vindo, {playerData?.name || 'Jogador'}!</span>
+                        <span>Bem-vindo, {playerData?.name || playerData?.email || 'Jogador'}!</span>
                         <button onClick={handleLogout} className="logout-button">
                             Sair
                         </button>
@@ -116,6 +117,10 @@ const PlayerDashboard = ({ onLogout }) => {
                 <div className="stats-panel">
                     <h3>📊 Seus Indicadores</h3>
                     <div className="stats-grid">
+                        <div className="stat-item">
+                            <span className="stat-label">Pontos Totais</span>
+                            <span className="stat-value">{playerData?.points?.pontos || '0'} 🎯</span>
+                        </div>
                         <div className="stat-item">
                             <span className="stat-label">Nível Médio</span>
                             <span className="stat-value">{playerData?.extra?.avg_level || 'N/A'}</span>
@@ -131,6 +136,10 @@ const PlayerDashboard = ({ onLogout }) => {
                         <div className="stat-item">
                             <span className="stat-label">Estrelas</span>
                             <span className="stat-value">{playerData?.extra?.stars || '0'} ⭐</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Nível Distintivo</span>
+                            <span className="stat-value">{playerData?.extra?.distinctive_level || '1'}</span>
                         </div>
                     </div>
                 </div>
@@ -161,10 +170,13 @@ const PlayerDashboard = ({ onLogout }) => {
                         <MedalhasPanel playerData={playerData} medalhas={medalhas} />
                         
                         <div className="points-panel">
-                            <h3>🎯 Pontos do Dia</h3>
+                            <h3>🎯 Pontos e Status</h3>
                             <div className="points-info">
-                                <p>Seus pontos são calculados automaticamente às 19h</p>
-                                <p>Multiplicadores das medalhas são aplicados automaticamente</p>
+                                <p><strong>Pontos Totais:</strong> {playerData?.points?.pontos || '0'}</p>
+                                <p><strong>Última Atualização:</strong> {playerData?.extra?.medal_expire_at ? new Date(playerData.extra.medal_expire_at).toLocaleDateString('pt-BR') : 'N/A'}</p>
+                                <p><strong>Status:</strong> {playerData?.extra?.at_risk ? '⚠️ Em Risco' : '✅ Seguro'}</p>
+                                <p><strong>Clientes Bloqueados:</strong> {playerData?.extra?.blocked_clients?.length || '0'}</p>
+                                <p>Pontos calculados automaticamente às 19h</p>
                             </div>
                         </div>
                     </div>
