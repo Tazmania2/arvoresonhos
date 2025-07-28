@@ -13,6 +13,16 @@ const PlayerDashboard = ({ onLogout }) => {
     const treeContainerRef = useRef(null);
     const treeRendererRef = useRef(null);
 
+    // Helper function to calculate gold medals and multiplier
+    const calculateMultiplier = (catalogItems = {}) => {
+        const goldMedals = Object.keys(catalogItems)
+            .filter(key => key.includes('_ouro') && catalogItems[key] > 0)
+            .reduce((total, key) => total + catalogItems[key], 0);
+        const multiplier = goldMedals + 1;
+        console.log('Gold medals found:', goldMedals, 'Multiplier:', multiplier);
+        return { goldMedals, multiplier };
+    };
+
     useEffect(() => {
         loadPlayerData();
     }, []);
@@ -150,7 +160,12 @@ const PlayerDashboard = ({ onLogout }) => {
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Multiplicador</span>
-                            <span className="stat-value">{playerData?.extra?.multiplier_base || '1.0'}x</span>
+                            <span className="stat-value">
+                                {(() => {
+                                    const { multiplier } = calculateMultiplier(playerData?.catalog_items);
+                                    return `${multiplier.toFixed(1)}x`;
+                                })()}
+                            </span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Estrelas</span>
@@ -192,6 +207,14 @@ const PlayerDashboard = ({ onLogout }) => {
                             <h3>🎯 Pontos e Status</h3>
                             <div className="points-info">
                                 <p><strong>Pontos Totais:</strong> {playerData?.total_points || '0'}</p>
+                                <p><strong>Medalhas de Ouro:</strong> {(() => {
+                                    const { goldMedals } = calculateMultiplier(playerData?.catalog_items);
+                                    return goldMedals;
+                                })()}</p>
+                                <p><strong>Multiplicador Ativo:</strong> {(() => {
+                                    const { multiplier } = calculateMultiplier(playerData?.catalog_items);
+                                    return `${multiplier.toFixed(1)}x`;
+                                })()}</p>
                                 <p><strong>Última Atualização:</strong> {playerData?.extra?.medal_expire_at ? new Date(playerData.extra.medal_expire_at).toLocaleDateString('pt-BR') : 'N/A'}</p>
                                 <p><strong>Status:</strong> {playerData?.extra?.at_risk ? '⚠️ Em Risco' : '✅ Seguro'}</p>
                                 <p><strong>Clientes Bloqueados:</strong> {playerData?.extra?.blocked_clients?.length || '0'}</p>
