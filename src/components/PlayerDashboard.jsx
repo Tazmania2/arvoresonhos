@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api';
-import TreeVisualization from './TreeVisualization';
+import TreeRenderer from '../utils/treeRenderer';
 import MedalhasPanel from './MedalhasPanel';
 import './PlayerDashboard.css';
 
@@ -10,6 +10,8 @@ const PlayerDashboard = ({ onLogout }) => {
     const [medalhas, setMedalhas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const treeContainerRef = useRef(null);
+    const treeRendererRef = useRef(null);
 
     useEffect(() => {
         loadPlayerData();
@@ -50,11 +52,21 @@ const PlayerDashboard = ({ onLogout }) => {
         }
     };
 
-    // Player stats para a árvore
-    const playerStats = {
-        avg_level: playerData?.extra?.avg_level,
-        avg_mood: playerData?.extra?.avg_mood
-    };
+    useEffect(() => {
+        if (clientes.length > 0 && treeContainerRef.current) {
+            // Initialize tree renderer
+            if (!treeRendererRef.current) {
+                treeRendererRef.current = new TreeRenderer('#tree-container');
+            }
+
+            // Render tree
+            const playerStats = {
+                avg_level: playerData?.extra?.avg_level,
+                avg_mood: playerData?.extra?.avg_mood
+            };
+            treeRendererRef.current.render(clientes, playerStats);
+        }
+    }, [clientes, playerData]);
 
     const handleLogout = () => {
         api.clearAuth();
@@ -127,10 +139,7 @@ const PlayerDashboard = ({ onLogout }) => {
                     <div className="tree-section">
                         <h3>👥 Sua Carteira de Clientes</h3>
                         <div className="tree-container">
-                            <TreeVisualization 
-                                clientes={clientes} 
-                                playerStats={playerStats}
-                            />
+                            <div id="tree-container" ref={treeContainerRef}></div>
                         </div>
                         <div className="tree-legend">
                             <div className="legend-item">
@@ -143,7 +152,7 @@ const PlayerDashboard = ({ onLogout }) => {
                             </div>
                             <div className="legend-item">
                                 <span className="legend-color fruit"></span>
-                                <span>🍎 Clique nos galhos para ver detalhes</span>
+                                <span>🍎 Frutas = Pontos Gerados</span>
                             </div>
                         </div>
                     </div>

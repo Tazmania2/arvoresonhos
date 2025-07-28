@@ -137,11 +137,67 @@
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
-    min-height: 700px;
+    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #e2e8f0;
+    cursor: grab;
+    overflow: hidden;
+    position: relative;
+}
+
+.tree-container:active {
+    cursor: grabbing;
+}
+
+/* Tree tooltip styles */
+.tree-tooltip {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 280px;
+    backdrop-filter: blur(10px);
+}
+
+/* Zoom controls styles */
+.zoom-controls circle {
+    transition: all 0.2s ease;
+}
+
+.zoom-controls circle:hover {
+    fill: #f7fafc;
+    stroke: #4a5568;
+    stroke-width: 2;
+}
+
+.zoom-controls text {
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Tree node hover effects */
+.node circle {
+    transition: all 0.3s ease;
+}
+
+.node:hover circle {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Tree links */
+.link {
+    transition: opacity 0.3s ease;
+}
+
+.link:hover {
+    opacity: 1 !important;
+    stroke-width: 3;
 }
 
 .tree-legend {
