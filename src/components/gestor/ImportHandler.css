@@ -1,0 +1,194 @@
+.import-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.import-section h3 {
+    color: #2d3748;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.import-section p {
+    color: #718096;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.file-upload-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.upload-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.upload-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.file-info {
+    color: #718096;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.message.success {
+    background: #c6f6d5;
+    color: #22543d;
+    border-left: 4px solid #38a169;
+}
+
+.message.error {
+    background: #fed7d7;
+    color: #c53030;
+    border-left: 4px solid #e53e3e;
+}
+
+.message.warning {
+    background: #fef5e7;
+    color: #c05621;
+    border-left: 4px solid #d69e2e;
+}
+
+.changes-panel {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.changes-panel h4 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.changes-list {
+    margin-bottom: 20px;
+}
+
+.change-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.change-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.change-icon {
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+.change-description {
+    color: #4a5568;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.confirm-button {
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.confirm-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(56, 161, 105, 0.3);
+}
+
+.confirm-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.import-info {
+    background: #edf2f7;
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.import-info h4 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.import-info ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.import-info li {
+    color: #4a5568;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Animation for changes */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.change-item {
+    animation: slideIn 0.3s ease-out;
+} 
